@@ -1,5 +1,7 @@
 </body>
-<footer class="bg-dark text-light py-4">
+</main> 
+<div class="mb-5"></div>
+<footer class="bg-dark text-light py-4 mt-auto">
     <div class="container">
         <div class="row">
             <!-- About Section -->

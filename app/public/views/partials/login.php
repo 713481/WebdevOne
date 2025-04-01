@@ -1,38 +1,25 @@
-/* 
-<?php
-session_start();
-require_once 'models/BaseModel.php';
-require_once 'models/UserModel.php';
+<div class="container mt-5" style="max-width: 500px;">
+    <h2 class="text-center mb-4">Login</h2>
 
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Authenticate user
-    $user = UserModel::authenticate($username, $password);
-    if ($user) {
-        // Set session and redirect to dashboard
-        $_SESSION['user'] = $user['username'];
-        header('Location: dashboard.php');
-        exit();
-    } else {
-        $error = "Invalid username or password.";
-    }
-}
-?> */
-
-<h2>Login</h2>
-    <?php if ($error): ?>
-        <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+    <?php if (!empty($error)): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($error); ?></div>
     <?php endif; ?>
-    <form action="login.php" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <br>
-        <button type="submit">Login</button>
+
+    <form action="/login" method="POST" class="border p-4 rounded bg-light shadow-sm">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" id="username" class="form-control" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">Login</button>
+
+        <div class="text-center mt-3">
+            Don't have an account? <a href="/register">Register here</a>
+        </div>
     </form>
+</div>

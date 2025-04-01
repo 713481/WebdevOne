@@ -11,7 +11,8 @@ Route::add('/about', function () {
 Route::add('/menu', function () {
     $menuModel = new MenuModel();
     $menu = $menuModel->getGroupedMenuItems(); // Fetch menu data grouped by category
+    $discounted = $menuModel->getDiscountedItems(); // Fetch discounted items
 
-    // Pass the $menu variable to the menu page
+    // Pass both the menu and discounted items to the view
     require_once(__DIR__ . "/../views/pages/menu.php");
 });

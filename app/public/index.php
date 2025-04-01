@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Set env variables and enable error reporting in local environment
  */
@@ -25,6 +24,11 @@ require_once(__DIR__ . "/routes/index.php");
 require_once(__DIR__ . "/routes/user.php");
 require_once(__DIR__ . "/routes/pages.php");
 require_once(__DIR__ . "/routes/login.php");
+require_once(__DIR__ . "/routes/register.php");
+require_once(__DIR__ . "/routes/reservation.php");
+require_once(__DIR__ . "/routes/admin.php");
+require_once(__DIR__ . "/routes/contact.php");
+require_once(__DIR__ . '/routes/api.php');
 
 // Start the router, enabling handling requests
 Route::run();

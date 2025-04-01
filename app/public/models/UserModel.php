@@ -40,15 +40,27 @@ class UserModel extends BaseModel
      * @param string $password
      * @return bool
      */
-    public function add($email, $username, $password)
+    public function add($email, $username, $password, $full_name = null, $phone_number = null)
     {
-        $stmt = self::$pdo->prepare("INSERT INTO users (email, username, password) VALUES (:email, :username, :password)");
-        return $stmt->execute([
-            ':email' => $email,
-            ':username' => $username,
-            ':password' => password_hash($password, PASSWORD_BCRYPT) // Hash the password securely
-        ]);
+        try {
+            $stmt = self::$pdo->prepare("
+                INSERT INTO users (email, username, password, full_name, phone_number)
+                VALUES (:email, :username, :password, :full_name, :phone_number)
+            ");
+        
+            return $stmt->execute([
+                ':email' => $email,
+                ':username' => $username,
+                ':password' => password_hash($password, PASSWORD_BCRYPT),
+                ':full_name' => $full_name,
+                ':phone_number' => $phone_number
+            ]);
+        } catch (PDOException $e) {
+            die("Database error: " . $e->getMessage());
+        }
     }
+    
+    
 
     /**
      * Update user details by ID
@@ -92,4 +104,37 @@ class UserModel extends BaseModel
         }
         return false; // Authentication failed
     }
+
+    //Create user through Admin dashboard
+    public function create($data) {
+        $stmt = self::$pdo->prepare("
+            INSERT INTO users (full_name, email, username, password, role, is_verified, created_at)
+            VALUES (:full_name, :email, :username, :password, :role, 1, NOW())
+        ");
+    
+        return $stmt->execute([
+            ':full_name' => $data['full_name'],
+            ':email' => $data['email'],
+            ':username' => $data['username'],
+            ':password' => $data['password'],
+            ':role' => $data['role'],
+        ]);
+    }
+    
+    //Edit user through Admin dashboard
+    public function updateFull($id, $full_name, $email, $username, $role) {
+        $stmt = self::$pdo->prepare("
+            UPDATE users
+            SET full_name = :full_name, email = :email, username = :username, role = :role
+            WHERE id = :id
+        ");
+        return $stmt->execute([
+            ':id' => $id,
+            ':full_name' => $full_name,
+            ':email' => $email,
+            ':username' => $username,
+            ':role' => $role
+        ]);
+    }
+    
 }

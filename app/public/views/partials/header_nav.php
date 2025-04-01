@@ -1,4 +1,8 @@
 <?php
+// Check session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 // Get the current page name
 $current_page = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 ?>
@@ -29,17 +33,35 @@ $current_page = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
                     <a class="nav-link <?= ($current_page == 'menu' || $current_page == 'menu.php') ? 'active' : '' ?>" href="/menu">Menu</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= ($current_page == 'reservation' || $current_page == 'reservation.php') ? 'active' : '' ?>" href="#">Reservation</a>
+                    <a class="nav-link <?= ($current_page == 'reservation' || $current_page == 'reservation.php') ? 'active' : '' ?>" href="/reservation">Reservation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= ($current_page == 'contact' || $current_page == 'contact.php') ? 'active' : '' ?>" href="#">Contact</a>
+                    <a class="nav-link <?= ($current_page == 'contact' || $current_page == 'contact.php') ? 'active' : '' ?>" href="/contact">Contact</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= ($current_page == 'faq' || $current_page == 'faq.php') ? 'active' : '' ?>" href="#">FAQ</a>
                 </li>
             </ul>
-            <!-- Login/Register Button -->
-            <a class="btn btn-primary ms-auto" href="/login">Login/Register</a>
+            <!-- Login/Register or Profile Dropdown -->
+            <?php if (isset($_SESSION['user'])): ?>
+                <div class="ms-auto dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <?= htmlspecialchars($_SESSION['user']['username']) ?>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="/my-reservations">My Reservations</a></li>
+                        <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+                            <li><a class="dropdown-item" href="/admin">Admin Dashboard</a></li>
+                            <li><a class="dropdown-item" href="/admin/menu">Edit menu</a></li>
+                        <?php endif; ?>
+
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            <?php else: ?>
+                <a class="btn btn-primary ms-auto" href="/login">Login/Register</a>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
