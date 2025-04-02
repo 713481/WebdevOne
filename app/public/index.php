@@ -29,6 +29,7 @@ require_once(__DIR__ . "/routes/reservation.php");
 require_once(__DIR__ . "/routes/admin.php");
 require_once(__DIR__ . "/routes/contact.php");
 require_once(__DIR__ . '/routes/api.php');
+require_once(__DIR__ . '/routes/review.php');
 
 // Start the router, enabling handling requests
 Route::run();

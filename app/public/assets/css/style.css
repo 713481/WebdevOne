@@ -45,3 +45,109 @@ input:focus {
     border-top-left-radius: 0.375rem;
     border-top-right-radius: 0.375rem;
 }
+
+/* =========== About us page ========== */
+/* About Page General Styles */
+.about-page-body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* About Hero Section */
+.about-hero-section {
+    background-color: #333;
+    color: #fff;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.about-hero-section h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.about-hero-section p {
+    font-size: 1.2em;
+}
+
+/* About Content Section */
+.about-content-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 10%;
+    background-color: #fff;
+    margin-top: 40px;
+    flex-wrap: wrap; /* Ensure content wraps on smaller screens */
+}
+
+.about-text {
+    flex: 1;
+    padding-right: 20px;
+    text-align: justify;
+}
+
+.about-text h2 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Ensures image is placed on the right, with no overlap */
+.about-images {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap; /* Ensure images wrap on smaller screens */
+    margin-left: 8vw;
+}
+
+.about-images img {
+    width: 100%;
+    max-width: 500px;  /* Max width to control image size */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Call to Action Section */
+.about-call-to-action {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.about-call-to-action h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.about-call-to-action p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.about-call-to-action .about-btn {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.about-call-to-action .about-btn:hover {
+    background-color: #c0392b;
+}

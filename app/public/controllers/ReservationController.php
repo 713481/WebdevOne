@@ -10,6 +10,11 @@ class ReservationController
     }
 
     public function create($user_id, $date, $time, $num_guests, $special_request = '') {
+        // Check if the reservation date is in the past
+        if (strtotime($date) < time()) {
+            return false; // Or use some other logic to handle this error
+        }
+        
         return $this->model->add($user_id, $date, $time, $num_guests, $special_request);
     }
 

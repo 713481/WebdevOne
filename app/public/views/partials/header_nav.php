@@ -24,7 +24,7 @@ $current_page = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link <?= ($current_page == '' || $current_page == 'index.php') ? 'active' : '' ?>" href=".">Home</a>
+                    <a class="nav-link <?= ($current_page == '' || $current_page == 'index.php') ? 'active' : '' ?>" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= ($current_page == 'about' || $current_page == 'about.php') ? 'active' : '' ?>" href="/about">About Us</a>
@@ -39,7 +39,7 @@ $current_page = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
                     <a class="nav-link <?= ($current_page == 'contact' || $current_page == 'contact.php') ? 'active' : '' ?>" href="/contact">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= ($current_page == 'faq' || $current_page == 'faq.php') ? 'active' : '' ?>" href="#">FAQ</a>
+                    <a class="nav-link <?= ($current_page == 'review' || $current_page == 'review.php') ? 'active' : '' ?>" href="/review">Review</a>
                 </li>
             </ul>
             <!-- Login/Register or Profile Dropdown -->

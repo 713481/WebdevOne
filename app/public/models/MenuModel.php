@@ -31,7 +31,12 @@ class MenuModel extends BaseModel
         ");
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch();
+        $menuItem = $stmt->fetch();
+        
+        // Check if image_url exists and is not empty
+        $menuItem['image_url'] = isset($menuItem['image_url']) ? $menuItem['image_url'] : 'default_image_url.jpg'; // default fallback image URL
+
+        return $menuItem;
     }
 
     /*** Get menu items grouped by category* @return array*/
@@ -71,6 +76,16 @@ class MenuModel extends BaseModel
     public function updateMenuItem($id, $data) {
         $data['id'] = $id;
     
+        // Check if image_url is provided, if not use the existing value
+        if (empty($data['image_url'])) {
+            // Fetch current image_url from the database if not provided
+            $currentItem = $this->getMenuItemById($id);
+            $data['image_url'] = $currentItem['image_url'];
+        }
+    
+        // Ensure discount price is handled
+        $data['discount_price'] = $data['discount_price'] !== '' ? $data['discount_price'] : null;
+    
         $stmt = self::$pdo->prepare("
             UPDATE menu_items SET
                 name = :name,
@@ -82,7 +97,6 @@ class MenuModel extends BaseModel
                 allergens = :allergens
             WHERE id = :id
         ");
-        $data['discount_price'] = $data['discount_price'] !== '' ? $data['discount_price'] : null;
     
         $stmt->execute([
             ':name' => $data['name'],

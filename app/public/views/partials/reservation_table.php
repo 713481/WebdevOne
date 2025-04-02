@@ -24,14 +24,14 @@
                     <td><?= htmlspecialchars($res['created_at']) ?></td>
                     <?php if ($show_actions): ?>
                         <td>
-                            <?php if ($res['status'] !== 'cancelled'): ?>
+                            <?php if ($res['status'] !== 'confirmed' && $res['status'] !== 'cancelled'): ?>
                                 <a href="/cancel-reservation/<?= $res['reservation_id'] ?>" 
                                    class="btn btn-sm btn-outline-danger"
                                    onclick="return confirm('Are you sure you want to cancel this reservation?');">
                                    Cancel
                                 </a>
                             <?php else: ?>
-                                <span class="text-muted">Cancelled</span>
+                                <span class="text-muted"><?= ucfirst($res['status']) ?></span>
                             <?php endif; ?>
                         </td>
                     <?php endif; ?>

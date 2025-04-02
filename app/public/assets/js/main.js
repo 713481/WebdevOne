@@ -35,3 +35,101 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 });
+
+// Fetch and display reviews when the page is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/get-reviews')
+        .then(response => response.json())
+        .then(data => {
+            const reviewsSection = document.getElementById('reviewsSection');
+            
+            // Check if reviews are returned and loop through to display
+            if (data.length > 0) {
+                data.forEach(review => {
+                    const reviewElement = document.createElement('div');
+                    reviewElement.classList.add('review');
+                    reviewElement.innerHTML = `
+                        <h5>${review.name}</h5>
+                        <p>${review.message}</p> <!-- Use the correct field name -->
+                    `;
+                    reviewsSection.appendChild(reviewElement);
+                });
+            } else {
+                reviewsSection.innerHTML = '<p class="text-muted">No reviews yet.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching reviews:', error);
+        });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const reviewForm = document.getElementById('reviewForm');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Log the form data to ensure it's captured correctly
+            console.log({ name, email, message });
+
+            // Create a FormData object to send the form data
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('message', message);
+
+            // Send the data using fetch (AJAX request)
+            fetch('/submit-review', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                console.log('Raw Response:', response); // Log the entire response to see the raw content
+                return response.text(); // Use .text() to log the raw text body before parsing
+            })
+            .then(text => {
+                console.log('Raw Text Body:', text); // Log the raw body content
+                // Now try to parse it as JSON
+                try {
+                    const data = JSON.parse(text); // Manually parse the text as JSON
+                    if (data.success) {
+                        const newReview = document.createElement('div');
+                        newReview.classList.add('review');
+                        newReview.innerHTML = `
+                            <h5>${name}</h5>
+                            <p>${message}</p>
+                        `;
+                        document.getElementById('reviewsSection').prepend(newReview);
+                        reviewForm.reset();
+                    } else {
+                        alert('Error submitting review: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting review:', error);
+            });
+            
+        });
+    }
+});
+
+document.querySelector("#reservationForm").addEventListener("submit", function(e) {
+    var reservationDate = document.querySelector("#reservation_date").value;
+    var today = new Date();
+    var selectedDate = new Date(reservationDate.split("/").reverse().join("-")); // Converts dd/mm/yyyy to yyyy-mm-dd
+
+    if (selectedDate < today) {
+        // Show the error message
+        document.querySelector("#error-message").textContent = "You cannot reserve a past date.";
+        e.preventDefault();  // Prevent form submission
+    } else {
+        document.querySelector("#error-message").textContent = ""; // Clear the error if the date is valid
+    }
+});
