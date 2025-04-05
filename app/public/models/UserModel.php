@@ -42,22 +42,38 @@ class UserModel extends BaseModel
      */
     public function add($email, $username, $password, $full_name = null, $phone_number = null)
     {
-        try {
-            $stmt = self::$pdo->prepare("
-                INSERT INTO users (email, username, password, full_name, phone_number)
-                VALUES (:email, :username, :password, :full_name, :phone_number)
-            ");
-        
-            return $stmt->execute([
-                ':email' => $email,
-                ':username' => $username,
-                ':password' => password_hash($password, PASSWORD_BCRYPT),
-                ':full_name' => $full_name,
-                ':phone_number' => $phone_number
-            ]);
-        } catch (PDOException $e) {
-            die("Database error: " . $e->getMessage());
+        // Check for existing username or email
+        $stmt = self::$pdo->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
+        $stmt->execute([
+            ':username' => $username,
+            ':email' => $email
+        ]);
+        $existingUser = $stmt->fetch();
+    
+        if ($existingUser) {
+            if ($existingUser['username'] === $username) {
+                return "Username already exists.";
+            }
+            if ($existingUser['email'] === $email) {
+                return "Email already exists.";
+            }
         }
+    
+        // Safe to insert new user with all required columns
+        $stmt = self::$pdo->prepare("
+            INSERT INTO users (email, username, password, full_name, phone_number, is_verified, created_at, role)
+            VALUES (:email, :username, :password, :full_name, :phone_number, 0, NOW(), 'user')
+        ");
+    
+        $success = $stmt->execute([
+            ':email' => $email,
+            ':username' => $username,
+            ':password' => password_hash($password, PASSWORD_BCRYPT),
+            ':full_name' => $full_name,
+            ':phone_number' => $phone_number
+        ]);
+    
+        return $success ? true : "Something went wrong while inserting the user.";
     }
     
     

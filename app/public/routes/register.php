@@ -11,7 +11,6 @@ Route::add('/register', function () {
 
 // Handle form submission (POST request)
 Route::add('/register', function () {
-    echo "Route loaded<br>";
     $error = '';
     $success = false;
 
@@ -24,10 +23,10 @@ Route::add('/register', function () {
     $userController = new UserController();
     $registered = $userController->register($email, $username, $password, $full_name, $phone_number);
 
-    if ($registered) {
+    if ($registered === true) {
         $success = true;
     } else {
-        $error = "Registration failed. Please try again.";
+        $error = $registered;
     }
 
     require_once(__DIR__ . "/../views/pages/register.php");

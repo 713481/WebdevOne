@@ -22,7 +22,6 @@ class UserController
 
     public function register($email, $username, $password, $full_name = null, $phone_number = null)
     {
-        echo "Inside controller register()<br>";
         return $this->userModel->add($email, $username, $password, $full_name, $phone_number);
     }
     
